@@ -12,20 +12,16 @@ package gtranslate;
 
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
-import com.sun.media.ui.ComboBox;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,6 +48,7 @@ public class GTranslate extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        option = new javax.swing.ButtonGroup();
         prog = new javax.swing.JProgressBar();
         btnStart = new javax.swing.JButton();
         lang = new javax.swing.JLabel();
@@ -64,9 +61,12 @@ public class GTranslate extends javax.swing.JFrame {
         LangSel = new javax.swing.JComboBox();
         langByCode = new javax.swing.JCheckBox();
         langCode = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GTranslate");
+
+        prog.setToolTipText("progress");
 
         btnStart.setFont(new java.awt.Font("Tahoma", 0, 10));
         btnStart.setText("Start");
@@ -94,6 +94,7 @@ public class GTranslate extends javax.swing.JFrame {
 
         lines.setText("1");
 
+        option.add(translateTo);
         translateTo.setText("Translate To:");
         translateTo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -103,6 +104,7 @@ public class GTranslate extends javax.swing.JFrame {
 
         LangSel.setEnabled(false);
 
+        option.add(langByCode);
         langByCode.setText("By code");
         langByCode.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -112,6 +114,9 @@ public class GTranslate extends javax.swing.JFrame {
 
         langCode.setText("Language Code");
         langCode.setEnabled(false);
+
+        jCheckBox1.setSelected(true);
+        jCheckBox1.setText("Translate to ALL");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,23 +136,25 @@ public class GTranslate extends javax.swing.JFrame {
                             .addComponent(lang)))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lines)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addComponent(langByCode)
                                 .addGap(35, 35, 35)
                                 .addComponent(langCode))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addComponent(translateTo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LangSel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lines)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)))
+                                .addComponent(LangSel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jCheckBox1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -156,32 +163,38 @@ public class GTranslate extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(prog, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(procent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(prog, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(procent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lang))
+                            .addComponent(btnStart))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lang))
-                    .addComponent(btnStart))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lines, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
+                                .addGap(8, 8, 8))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lines, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
-                        .addGap(8, 8, 8))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(translateTo)
-                    .addComponent(LangSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(langByCode)
-                    .addComponent(langCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32))
+                            .addComponent(translateTo)
+                            .addComponent(LangSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(langByCode)
+                            .addComponent(langCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jCheckBox1)
+                        .addGap(69, 69, 69))))
         );
 
         pack();
@@ -333,25 +346,19 @@ public class GTranslate extends javax.swing.JFrame {
                             procent.setText(df.format(proc)+"%");
                             prog.setValue((int)proc);
                         }
-                        Thread.currentThread().sleep(100);
+                        Thread.sleep(100);
                         //   if(linecount==10000) Thread.currentThread().sleep(350);
                     } catch (Exception exception) {
                         System.out.println("Error @ line: " + linecount + " Language " + l.name());
-                        JOptionPane.showMessageDialog(this, exception.getMessage());
-                        exception.printStackTrace();
+                        JOptionPane.showMessageDialog(this, exception.getMessage());                        
                         bw.close();
                         break;
                     }
                 }
                 bw.close();
     }
-    public void translateAll() throws Exception {
-        // Set the HTTP referrer to your website address.
-
-        input_file = "EN.txt";
-       
-       
-
+    public void translateAll() throws Exception {        
+        input_file = "EN.txt";              
         for (int i = 0; i < set.length; i++) {
             if (!set[i].toString().equals("en")) {
                 int linecount = 1;
@@ -416,70 +423,20 @@ public class GTranslate extends javax.swing.JFrame {
     private javax.swing.JComboBox LangSel;
     private javax.swing.JSlider SliderLines;
     private javax.swing.JButton btnStart;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lang;
     private javax.swing.JCheckBox langByCode;
     private javax.swing.JTextField langCode;
     private javax.swing.JLabel lines;
+    private javax.swing.ButtonGroup option;
     private javax.swing.JLabel procent;
     private javax.swing.JProgressBar prog;
     private javax.swing.JCheckBox translateTo;
     // End of variables declaration//GEN-END:variables
     private String source;
-    private static Language[] set = {
-        Language.AFRIKAANS,
-        Language.ALBANIAN,
-        Language.ARABIC,
-        Language.BELARUSIAN,
-        Language.BULGARIAN,
-        Language.CATALAN,
-        Language.CHINESE_SIMPLIFIED,
-        Language.CHINESE_TRADITIONAL,
-        Language.CROATIAN,
-        Language.CZECH,
-        Language.DANISH,
-        Language.DUTCH,
-        Language.ESTONIAN,
-        Language.FILIPINO,
-        Language.FINNISH,
-        Language.FRENCH,
-        Language.GALICIAN,
-        Language.GERMAN,
-        Language.GREEK,
-        Language.HEBREW,
-        Language.HINDI,
-        Language.HUNGARIAN,
-        Language.ICELANDIC,
-        Language.INDONESIAN,
-        Language.IRISH,
-        Language.ITALIAN,
-        Language.JAPANESE,
-        Language.KOREAN,
-        Language.LATVIAN,
-        Language.LITHUANIAN,
-        Language.MACEDONIAN,
-        Language.MALAY,
-        Language.MALTESE,
-        Language.NORWEGIAN,
-        Language.PERSIAN,
-        Language.POLISH,
-        Language.PORTUGUESE,
-        Language.ROMANIAN,
-        Language.RUSSIAN,
-        Language.SERBIAN,
-        Language.SLOVAK,
-        Language.SLOVENIAN,
-        Language.SPANISH,
-        Language.SWAHILI,
-        Language.SWEDISH,
-        Language.THAI,
-        Language.TURKISH,
-        Language.UKRAINIAN,
-        Language.VIETNAMESE,
-        Language.WELSH,
-        Language.YIDDISH
-    };
+    private static Language[] set = Language.values();
     private int nr_lines=1;
 
     private String input_file = "EN.txt";
