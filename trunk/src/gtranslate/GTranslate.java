@@ -36,8 +36,7 @@ public class GTranslate extends javax.swing.JFrame {
 
     /** Creates new form GTranslate */
     public GTranslate() {
-        initComponents();
-        ComboBoxModel model =  LangSel.getModel();
+        initComponents();        
          for (int i = 0; i < set.length; i++) {
              LangSel.addItem(set[i].name());
          }
@@ -63,6 +62,8 @@ public class GTranslate extends javax.swing.JFrame {
         lines = new javax.swing.JLabel();
         translateTo = new javax.swing.JCheckBox();
         LangSel = new javax.swing.JComboBox();
+        langByCode = new javax.swing.JCheckBox();
+        langCode = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GTranslate");
@@ -80,7 +81,7 @@ public class GTranslate extends javax.swing.JFrame {
         procent.setText("0%");
 
         SliderLines.setMajorTickSpacing(1);
-        SliderLines.setMaximum(40);
+        SliderLines.setMaximum(20);
         SliderLines.setValue(1);
         SliderLines.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -102,6 +103,16 @@ public class GTranslate extends javax.swing.JFrame {
 
         LangSel.setEnabled(false);
 
+        langByCode.setText("By code");
+        langByCode.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                langByCodeItemStateChanged(evt);
+            }
+        });
+
+        langCode.setText("Language Code");
+        langCode.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -119,18 +130,24 @@ public class GTranslate extends javax.swing.JFrame {
                                 .addComponent(btnStart))
                             .addComponent(lang)))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(translateTo)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(LangSel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lines))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(langByCode)
+                                .addGap(35, 35, 35)
+                                .addComponent(langCode))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(translateTo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LangSel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lines)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -149,15 +166,22 @@ public class GTranslate extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-                        .addComponent(lines, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lines, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
+                        .addGap(8, 8, 8))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(SliderLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(translateTo)
                     .addComponent(LangSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(langByCode)
+                    .addComponent(langCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -168,9 +192,13 @@ public class GTranslate extends javax.swing.JFrame {
 
             public void run() {
                 try {
-                    if(!translateTo.isSelected())
-                        translateAll();
-                    else translateToLang(set[LangSel.getSelectedIndex()]);
+                    if (translateTo.isSelected()) {
+                        translateToLang(set[LangSel.getSelectedIndex()]);
+                    } else if (langByCode.isSelected()) {
+                        translateToLangbyCode(langCode.getText());
+                    } else {
+                       translateAll();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(GTranslate.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -179,7 +207,7 @@ public class GTranslate extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStartMouseReleased
 
     private void SliderLinesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SliderLinesMouseReleased
-        nr_lines = SliderLines.getValue();
+        nr_lines = SliderLines.getValue()*5;
         lines.setText(nr_lines+"");
     }//GEN-LAST:event_SliderLinesMouseReleased
 
@@ -187,6 +215,11 @@ public class GTranslate extends javax.swing.JFrame {
         if(translateTo.isSelected())  LangSel.setEnabled(true);
         else LangSel.setEnabled(false);
     }//GEN-LAST:event_translateToItemStateChanged
+
+    private void langByCodeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_langByCodeItemStateChanged
+       if(langByCode.isSelected()) langCode.setEnabled(true);
+        else langCode.setEnabled(false);
+    }//GEN-LAST:event_langByCodeItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -200,11 +233,67 @@ public class GTranslate extends javax.swing.JFrame {
         });
     }
 
+     public void translateToLangbyCode(String code)  throws Exception
+    {
+        Language l = Language.fromString(code);
+        int linecount = 1;
+                System.out.println("Translating to : " +l.name());
+                lang.setText("Translating to : " + l.name());
+                File f = new File(input_file);
+                File out = new File(l.name() + ".txt");
+
+                FileReader fr = new FileReader(f);
+                BufferedReader br = new BufferedReader(fr);
+
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),"UTF8"));
+
+
+
+                int total = 60403;
+                while (br.ready()) {
+                    try {
+                        Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
+                        //5 lines at a time
+                        String[] lines = new String[nr_lines];
+                        for (int j = 0; j < lines.length; j++) {
+                            if (br.ready()) {
+                                lines[j] = br.readLine();
+                            } else {
+                                lines[j] = "end";
+                            }
+                        }
+                        String[] translatedText = Translate.execute(lines, Language.ENGLISH, l);
+                        for (int j = 0; j < translatedText.length; j++) {
+                            String string = translatedText[j];
+                            if(linecount!=1)bw.newLine();
+                            bw.write(string);
+                            linecount++;
+                            if (linecount > total) {
+                                break;
+                            }
+
+                            DecimalFormat df = new DecimalFormat("##.##");
+                            double proc = (((linecount*1.0)/(total*1.0))*100);
+                            procent.setText(df.format(proc)+"%");
+                            prog.setValue((int)proc);
+                        }
+                        Thread.currentThread().sleep(100);
+                        //   if(linecount==10000) Thread.currentThread().sleep(350);
+                    } catch (Exception exception) {
+                        System.out.println("Error @ line: " + linecount + " Language " + l.name());
+                        JOptionPane.showMessageDialog(this, exception.getMessage());
+                        exception.printStackTrace();
+                        bw.close();
+                        break;
+                    }
+                }
+                bw.close();
+    }
+
     public void translateToLang(Language l)  throws Exception
     {
 
-        int linecount = 1;
-                System.out.println("Translating to : " +l.name());
+        int linecount = 1;                
                 lang.setText("Translating to : " + l.name());
                 File f = new File(input_file);
                 File out = new File(l.name() + ".txt");
@@ -330,6 +419,8 @@ public class GTranslate extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lang;
+    private javax.swing.JCheckBox langByCode;
+    private javax.swing.JTextField langCode;
     private javax.swing.JLabel lines;
     private javax.swing.JLabel procent;
     private javax.swing.JProgressBar prog;
@@ -384,7 +475,7 @@ public class GTranslate extends javax.swing.JFrame {
         Language.SWEDISH,
         Language.THAI,
         Language.TURKISH,
-        Language.UKRANIAN,
+        Language.UKRAINIAN,
         Language.VIETNAMESE,
         Language.WELSH,
         Language.YIDDISH
