@@ -12,11 +12,15 @@ package gtranslate;
 
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -32,11 +36,11 @@ public class GTranslate extends javax.swing.JFrame {
 
     /** Creates new form GTranslate */
     public GTranslate() {
-        initComponents();        
-         for (int i = 0; i < set.length; i++) {
-             LangSel.addItem(set[i].name());
-         }
-        
+        initComponents();
+        for (int i = 0; i < set.length; i++) {
+            LangSel.addItem(set[i].name());
+        }
+
     }
 
     /** This method is called from within the constructor to
@@ -115,6 +119,7 @@ public class GTranslate extends javax.swing.JFrame {
         langCode.setText("Language Code");
         langCode.setEnabled(false);
 
+        option.add(jCheckBox1);
         jCheckBox1.setSelected(true);
         jCheckBox1.setText("Translate to ALL");
 
@@ -210,7 +215,7 @@ public class GTranslate extends javax.swing.JFrame {
                     } else if (langByCode.isSelected()) {
                         translateToLangbyCode(langCode.getText());
                     } else {
-                       translateAll();
+                        translateAll();
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(GTranslate.class.getName()).log(Level.SEVERE, null, ex);
@@ -220,18 +225,24 @@ public class GTranslate extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStartMouseReleased
 
     private void SliderLinesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SliderLinesMouseReleased
-        nr_lines = SliderLines.getValue()*5;
-        lines.setText(nr_lines+"");
+        nr_lines = SliderLines.getValue() * 5;
+        lines.setText(nr_lines + "");
     }//GEN-LAST:event_SliderLinesMouseReleased
 
     private void translateToItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_translateToItemStateChanged
-        if(translateTo.isSelected())  LangSel.setEnabled(true);
-        else LangSel.setEnabled(false);
+        if (translateTo.isSelected()) {
+            LangSel.setEnabled(true);
+        } else {
+            LangSel.setEnabled(false);
+        }
     }//GEN-LAST:event_translateToItemStateChanged
 
     private void langByCodeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_langByCodeItemStateChanged
-       if(langByCode.isSelected()) langCode.setEnabled(true);
-        else langCode.setEnabled(false);
+        if (langByCode.isSelected()) {
+            langCode.setEnabled(true);
+        } else {
+            langCode.setEnabled(false);
+        }
     }//GEN-LAST:event_langByCodeItemStateChanged
 
     /**
@@ -246,119 +257,119 @@ public class GTranslate extends javax.swing.JFrame {
         });
     }
 
-     public void translateToLangbyCode(String code)  throws Exception
-    {
+    public void translateToLangbyCode(String code) throws Exception {
         Language l = Language.fromString(code);
         int linecount = 1;
-                System.out.println("Translating to : " +l.name());
-                lang.setText("Translating to : " + l.name());
-                File f = new File(input_file);
-                File out = new File(l.name() + ".txt");
+        System.out.println("Translating to : " + l.name());
+        lang.setText("Translating to : " + l.name());
+        File f = new File(input_file);
+        File out = new File(l.name() + ".txt");
 
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
+        FileReader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
 
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),"UTF8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out), "UTF8"));
 
 
 
-                int total = 60403;
-                while (br.ready()) {
-                    try {
-                        Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
-                        //5 lines at a time
-                        String[] lines = new String[nr_lines];
-                        for (int j = 0; j < lines.length; j++) {
-                            if (br.ready()) {
-                                lines[j] = br.readLine();
-                            } else {
-                                lines[j] = "end";
-                            }
-                        }
-                        String[] translatedText = Translate.execute(lines, Language.ENGLISH, l);
-                        for (int j = 0; j < translatedText.length; j++) {
-                            String string = translatedText[j];
-                            if(linecount!=1)bw.newLine();
-                            bw.write(string);
-                            linecount++;
-                            if (linecount > total) {
-                                break;
-                            }
-
-                            DecimalFormat df = new DecimalFormat("##.##");
-                            double proc = (((linecount*1.0)/(total*1.0))*100);
-                            procent.setText(df.format(proc)+"%");
-                            prog.setValue((int)proc);
-                        }
-                        Thread.currentThread().sleep(100);
-                        //   if(linecount==10000) Thread.currentThread().sleep(350);
-                    } catch (Exception exception) {
-                        System.out.println("Error @ line: " + linecount + " Language " + l.name());
-                        JOptionPane.showMessageDialog(this, exception.getMessage());
-                        exception.printStackTrace();
-                        bw.close();
-                        break;
+        int total = countLines(input_file);
+        while (br.ready()) {
+            try {
+                Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
+                //5 lines at a time
+                String[] linesBuffer = new String[nr_lines];
+                for (int j = 0; j < linesBuffer.length; j++) {
+                    if (br.ready()) {
+                        linesBuffer[j] = br.readLine();
+                    } else {
+                        linesBuffer[j] = "end";
                     }
                 }
-                bw.close();
-    }
-
-    public void translateToLang(Language l)  throws Exception
-    {
-
-        int linecount = 1;                
-                lang.setText("Translating to : " + l.name());
-                File f = new File(input_file);
-                File out = new File(l.name() + ".txt");
-
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
-                
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),"UTF8"));
-
-
-                
-                int total = 60403;
-                while (br.ready()) {
-                    try {
-                        Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
-                        //5 lines at a time
-                        String[] lines = new String[nr_lines];
-                        for (int j = 0; j < lines.length; j++) {
-                            if (br.ready()) {
-                                lines[j] = br.readLine();
-                            } else {
-                                lines[j] = "end";
-                            }
-                        }
-                        String[] translatedText = Translate.execute(lines, Language.ENGLISH, l);
-                        for (int j = 0; j < translatedText.length; j++) {
-                            String string = translatedText[j];
-                            if(linecount!=1)bw.newLine();
-                            bw.write(string);
-                            linecount++;
-                            if (linecount > total) {
-                                break;
-                            }
-
-                            DecimalFormat df = new DecimalFormat("##.##");
-                            double proc = (((linecount*1.0)/(total*1.0))*100);
-                            procent.setText(df.format(proc)+"%");
-                            prog.setValue((int)proc);
-                        }
-                        Thread.sleep(100);
-                        //   if(linecount==10000) Thread.currentThread().sleep(350);
-                    } catch (Exception exception) {
-                        System.out.println("Error @ line: " + linecount + " Language " + l.name());
-                        JOptionPane.showMessageDialog(this, exception.getMessage());                        
-                        bw.close();
+                String[] translatedText = Translate.execute(linesBuffer, Language.ENGLISH, l);
+                for (int j = 0; j < translatedText.length; j++) {
+                    String string = translatedText[j];
+                    if (linecount != 1) {
+                        bw.newLine();
+                    }
+                    bw.write(string);
+                    linecount++;
+                    if (linecount > total) {
                         break;
                     }
+
+                    DecimalFormat df = new DecimalFormat("##.##");
+                    double proc = (((linecount * 1.0) / (total * 1.0)) * 100);
+                    procent.setText(df.format(proc) + "%");
+                    prog.setValue((int) proc);
                 }
+                Thread.sleep(100);
+                //   if(linecount==10000) Thread.currentThread().sleep(350);
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, exception.getMessage());
                 bw.close();
+                break;
+            }
+        }
+        bw.close();
     }
-    public void translateAll() throws Exception {        
-        input_file = "EN.txt";              
+
+    public void translateToLang(Language l) throws Exception {
+
+        int linecount = 1;
+        lang.setText("Translating to : " + l.name());
+        File f = new File(input_file);
+        File out = new File(l.name() + ".txt");
+
+        FileReader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out), "UTF8"));
+
+
+
+        int total = countLines(input_file);
+        while (br.ready()) {
+            try {
+                Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
+                //5 lines at a time
+                String[] linesBuffer = new String[nr_lines];
+                for (int j = 0; j < linesBuffer.length; j++) {
+                    if (br.ready()) {
+                        linesBuffer[j] = br.readLine();
+                    } else {
+                        linesBuffer[j] = "end";
+                    }
+                }
+                String[] translatedText = Translate.execute(linesBuffer, Language.ENGLISH, l);
+                for (int j = 0; j < translatedText.length; j++) {
+                    String string = translatedText[j];
+                    if (linecount != 1) {
+                        bw.newLine();
+                    }
+                    bw.write(string);
+                    linecount++;
+                    if (linecount > total) {
+                        break;
+                    }
+
+                    DecimalFormat df = new DecimalFormat("##.##");
+                    double proc = (((linecount * 1.0) / (total * 1.0)) * 100);
+                    procent.setText(df.format(proc) + "%");
+                    prog.setValue((int) proc);
+                }
+                Thread.sleep(100);
+                //   if(linecount==10000) Thread.currentThread().sleep(350);
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, exception.getMessage());
+                bw.close();
+                break;
+            }
+        }
+        bw.close();
+    }
+
+    public void translateAll() throws Exception {
+        input_file = "EN.txt";
         for (int i = 0; i < set.length; i++) {
             if (!set[i].toString().equals("en")) {
                 int linecount = 1;
@@ -370,54 +381,69 @@ public class GTranslate extends javax.swing.JFrame {
                 FileReader fr = new FileReader(f);
                 BufferedReader br = new BufferedReader(fr);
 
-                
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),"UTF8"));
-                int total = 60403;
+
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out), "UTF8"));
+                int total = countLines(input_file);
                 while (linecount <= total) {
                     try {
                         Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
                         //5 lines at a time
-                        String[] lines = new String[nr_lines];
-                        for (int j = 0; j < lines.length; j++) {
+                        String[] linesBuffer = new String[nr_lines];
+                        for (int j = 0; j < linesBuffer.length; j++) {
                             if (br.ready()) {
-                                lines[j] = br.readLine();
+                                linesBuffer[j] = br.readLine();
                             } else {
-                                lines[j] = "end";
+                                linesBuffer[j] = "end";
                             }
                         }
-                        String[] translatedText = Translate.execute(lines, Language.ENGLISH, set[i]);
+                        String[] translatedText = Translate.execute(linesBuffer, Language.ENGLISH, set[i]);
                         for (int j = 0; j < translatedText.length; j++) {
                             String string = translatedText[j];
-                            if(linecount!=1)bw.newLine();
-                            bw.write(string);                            
+                            if (linecount != 1) {
+                                bw.newLine();
+                            }
+                            bw.write(string);
                             linecount++;
                             if (linecount > total) {
                                 break;
                             }
-                          
+
                             DecimalFormat df = new DecimalFormat("##.##");
-                            double proc = (((linecount*1.0)/(total*1.0))*100);
-                            procent.setText(df.format(proc)+"%");
-                            prog.setValue((int)proc);
+                            double proc = (((linecount * 1.0) / (total * 1.0)) * 100);
+                            procent.setText(df.format(proc) + "%");
+                            prog.setValue((int) proc);
                         }
-                        Thread.currentThread().sleep(100);
+                        Thread.sleep(100);
                         //   if(linecount==10000) Thread.currentThread().sleep(350);
                     } catch (Exception exception) {
-                        System.out.println("Error @ line: " + linecount + " Language " + set[i].name());
                         JOptionPane.showMessageDialog(this, exception.getMessage());
-                        exception.printStackTrace();
                         bw.close();
                         break;
                     }
                 }
                 bw.close();
                 //5min pause
-               
+
 
             }
-             Thread.currentThread().sleep(2000);
+            Thread.sleep(5000);
             System.out.println("Job done");
         }
+    }
+
+    public int countLines(String filename) throws IOException {
+        InputStream is = new BufferedInputStream(new FileInputStream(filename));
+        byte[] c = new byte[1024];
+        int count = 0;
+        int readChars = 0;
+        while ((readChars = is.read(c)) != -1) {
+            for (int i = 0; i < readChars; ++i) {
+                if (c[i] == '\n') {
+                    ++count;
+                }
+            }
+        }
+        return count;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox LangSel;
@@ -435,13 +461,10 @@ public class GTranslate extends javax.swing.JFrame {
     private javax.swing.JProgressBar prog;
     private javax.swing.JCheckBox translateTo;
     // End of variables declaration//GEN-END:variables
-    private String source;
     private static Language[] set = Language.values();
-    private int nr_lines=1;
-
+    private int nr_lines = 1;
     private String input_file = "EN.txt";
-
     private String[] refs = {"proiect.frevar.com",
-            "google.com"
-        };
+        "google.com"
+    };
 }
