@@ -11,7 +11,10 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -55,5 +58,20 @@ public class Utils implements ClipboardOwner{
 
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
       
+    }
+
+     public static int countLines(String filename) throws IOException {
+        InputStream is = new BufferedInputStream(new FileInputStream(filename));
+        byte[] c = new byte[1024];
+        int count = 0;
+        int readChars = 0;
+        while ((readChars = is.read(c)) != -1) {
+            for (int i = 0; i < readChars; ++i) {
+                if (c[i] == '\n') {
+                    ++count;
+                }
+            }
+        }
+        return count;
     }
 }

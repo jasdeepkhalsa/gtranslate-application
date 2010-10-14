@@ -38,6 +38,10 @@ import org.json.JSONObject;
 public abstract class GoogleAPI {
 
 	protected static final String ENCODING = "UTF-8";
+        protected static String proxyHost;
+        protected static  int proxyPort;
+        protected static  String username;
+        protected static  String password;
     
     /**
      * The HTTP referrer attribute.
@@ -73,6 +77,7 @@ public abstract class GoogleAPI {
     		uc.setRequestProperty("referer", referrer);
     		uc.setRequestMethod("GET");
     		uc.setDoOutput(true);
+                
     		
     		try {
     			final String result = inputStreamToString(uc.getInputStream());

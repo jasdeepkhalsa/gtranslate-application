@@ -13,7 +13,6 @@ package com.google.UI;
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -54,6 +53,7 @@ public class GTranslate extends javax.swing.JFrame {
         osclipClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
        checkClipBoard();
+      
        
     }
 
@@ -105,6 +105,7 @@ public class GTranslate extends javax.swing.JFrame {
         lblSize = new javax.swing.JLabel();
         lblNrLines = new javax.swing.JLabel();
         btnPaste = new javax.swing.JButton();
+        lblTime = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         General = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
@@ -120,6 +121,7 @@ public class GTranslate extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         proxyHost = new javax.swing.JTextField();
         proxyPort = new javax.swing.JTextField();
+        proxy = new javax.swing.JCheckBox();
         proxySettings1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -150,6 +152,7 @@ public class GTranslate extends javax.swing.JFrame {
             }
         });
 
+        btnLoadFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/google/res/package.png"))); // NOI18N
         btnLoadFile.setText("Load File");
         btnLoadFile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -197,6 +200,8 @@ public class GTranslate extends javax.swing.JFrame {
             }
         });
 
+        lblTime.setText("Remaining time: ");
+
         javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
         main.setLayout(mainLayout);
         mainLayout.setHorizontalGroup(
@@ -217,7 +222,8 @@ public class GTranslate extends javax.swing.JFrame {
                             .addGroup(mainLayout.createSequentialGroup()
                                 .addComponent(btnLoadFile)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnPaste)))
+                                .addComponent(btnPaste))
+                            .addComponent(lblTime))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -226,7 +232,10 @@ public class GTranslate extends javax.swing.JFrame {
             mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(mainLayout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(mainLayout.createSequentialGroup()
                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainLayout.createSequentialGroup()
@@ -236,13 +245,14 @@ public class GTranslate extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lang))
                             .addComponent(btnStart))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTime)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnLoadFile)
-                            .addComponent(btnPaste)))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                            .addComponent(btnPaste))
+                        .addGap(43, 43, 43)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -355,6 +365,17 @@ public class GTranslate extends javax.swing.JFrame {
         jLabel4.setMinimumSize(new java.awt.Dimension(61, 30));
         jLabel4.setPreferredSize(new java.awt.Dimension(61, 30));
 
+        proxyHost.setEnabled(false);
+
+        proxyPort.setEnabled(false);
+
+        proxy.setText("Use proxy");
+        proxy.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                proxyItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout proxySettingsLayout = new javax.swing.GroupLayout(proxySettings);
         proxySettings.setLayout(proxySettingsLayout);
         proxySettingsLayout.setHorizontalGroup(
@@ -369,13 +390,15 @@ public class GTranslate extends javax.swing.JFrame {
                     .addGroup(proxySettingsLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(proxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(proxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(proxy))
                 .addContainerGap(178, Short.MAX_VALUE))
         );
         proxySettingsLayout.setVerticalGroup(
             proxySettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, proxySettingsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(proxy)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(proxySettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(proxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -448,7 +471,7 @@ public class GTranslate extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -475,6 +498,7 @@ public class GTranslate extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStartMouseReleased
+        
         new Thread(new Runnable() {
 
             public void run() {
@@ -567,6 +591,18 @@ public class GTranslate extends javax.swing.JFrame {
            txtInput.setText(Utils.getClipboardContents());
     }//GEN-LAST:event_btnPasteMouseReleased
 
+    private void proxyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_proxyItemStateChanged
+        if(proxy.isSelected())
+        {
+            proxyHost.setEnabled(true);
+            proxyPort.setEnabled(true);
+        }else
+        {
+            proxyHost.setEnabled(false);
+            proxyPort.setEnabled(false);
+        }
+    }//GEN-LAST:event_proxyItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -579,6 +615,11 @@ public class GTranslate extends javax.swing.JFrame {
         });
     }
 
+    /**
+     *  Translates a whole file to <b>l</b>. Output is saved in a file name
+     * @param l - Language to translate to
+     * @throws Exception
+     */
     public void translateToLang(Language l) throws Exception {
         int linecount = 1;
         lang.setText("Translating to : " + l.name());
@@ -588,9 +629,10 @@ public class GTranslate extends javax.swing.JFrame {
         FileReader fr = new FileReader(f);
         BufferedReader br = new BufferedReader(fr);
 
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out), "UTF8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out), "UTF-8"));
          
-        int total = countLines(input_file);
+        int total = Utils.countLines(input_file);
+        float  startTime = System.currentTimeMillis();
         while (br.ready()) {
             try {
                 Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
@@ -628,6 +670,12 @@ public class GTranslate extends javax.swing.JFrame {
                 bw.close();
                 break;
             }
+            int cur = (int) ((System.currentTimeMillis() - startTime) / 1000F)*(total)/linecount;
+            int minutes = cur / 60;
+            int sec =  (cur - minutes * 60);
+            int hours = minutes / 60;
+            minutes -= hours * 60;
+            lblTime.setText((hours / 10 == 0 ? "0" + hours : hours) + ":" + (minutes / 10 == 0 ? "0" + minutes : minutes) + ":" + (sec / 10 == 0 ? "0" + sec : sec));
         }
         bw.close();
     }
@@ -641,24 +689,10 @@ public class GTranslate extends javax.swing.JFrame {
         for (int i = 0; i < set.length; i++) {
             translateToLang(set[i]);
             Thread.sleep(5000);
-            System.out.println("Job done");
         }
     }
 
-    public int countLines(String filename) throws IOException {
-        InputStream is = new BufferedInputStream(new FileInputStream(filename));
-        byte[] c = new byte[1024];
-        int count = 0;
-        int readChars = 0;
-        while ((readChars = is.read(c)) != -1) {
-            for (int i = 0; i < readChars; ++i) {
-                if (c[i] == '\n') {
-                    ++count;
-                }
-            }
-        }
-        return count;
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel General;
     private javax.swing.JComboBox LangSel;
@@ -682,11 +716,13 @@ public class GTranslate extends javax.swing.JFrame {
     private javax.swing.JTextField langCode;
     private javax.swing.JLabel lblNrLines;
     private javax.swing.JLabel lblSize;
+    private javax.swing.JLabel lblTime;
     private javax.swing.JLabel lines;
     private javax.swing.JPanel main;
     private javax.swing.ButtonGroup option;
     private javax.swing.JLabel procent;
     private javax.swing.JProgressBar prog;
+    private javax.swing.JCheckBox proxy;
     private javax.swing.JTextField proxyHost;
     private javax.swing.JTextField proxyPort;
     private javax.swing.JPanel proxySettings;
