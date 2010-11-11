@@ -12,19 +12,15 @@ package com.google.UI;
 
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
-import java.awt.Toolkit;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import java.io.BufferedInputStream.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,10 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.awt.datatransfer.Clipboard;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-
 
 /**
  *
@@ -54,7 +48,9 @@ public class GTranslate extends javax.swing.JFrame {
 
             @Override
             public boolean accept(File f) {
-                if(f.isDirectory()) return true;
+                if (f.isDirectory()) {
+                    return true;
+                }
                 return f.getName().endsWith(".txt");
             }
 
@@ -66,19 +62,17 @@ public class GTranslate extends javax.swing.JFrame {
 
         fileChooser.setFileFilter(fileter);
 
-       checkClipBoard();
-      
-       prog.setStringPainted(true);
-       
+        checkClipBoard();
+
+        prog.setStringPainted(true);
+
     }
 
     /**
      * Check the clipboard for content
      */
-
-    private void checkClipBoard()
-    {
-         new Thread(new Runnable() {
+    private void checkClipBoard() {
+        new Thread(new Runnable() {
 
             public void run() {
                 while (true) {
@@ -90,11 +84,10 @@ public class GTranslate extends javax.swing.JFrame {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GTranslate.class.getName()).log(Level.SEVERE, null, ex);
                     }
-               }
+                }
             }
         }).start();
     }
-   
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -191,7 +184,7 @@ public class GTranslate extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSize)
                     .addComponent(lblNrLines))
-                .addContainerGap(151, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +214,7 @@ public class GTranslate extends javax.swing.JFrame {
             .addGroup(mainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
                     .addGroup(mainLayout.createSequentialGroup()
                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainLayout.createSequentialGroup()
@@ -260,7 +253,7 @@ public class GTranslate extends javax.swing.JFrame {
                             .addComponent(btnLoadFile)
                             .addComponent(btnPaste))
                         .addGap(43, 43, 43)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -272,7 +265,7 @@ public class GTranslate extends javax.swing.JFrame {
 
         option.add(jCheckBox1);
         jCheckBox1.setSelected(true);
-        jCheckBox1.setText("Translate to ALL");
+        jCheckBox1.setText("Bulk Translate");
 
         option.add(translateTo);
         translateTo.setText("Translate To:");
@@ -333,13 +326,14 @@ public class GTranslate extends javax.swing.JFrame {
                         .addComponent(lines, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jCheckBox1)
                     .addGroup(GeneralLayout.createSequentialGroup()
-                        .addComponent(translateTo)
+                        .addGroup(GeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(translateTo)
+                            .addComponent(langByCode))
                         .addGap(23, 23, 23)
-                        .addComponent(LangSel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(GeneralLayout.createSequentialGroup()
-                        .addComponent(langByCode)
-                        .addGap(57, 57, 57)
-                        .addComponent(langCode, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(GeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(langCode, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LangSel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(8, 8, 8))
         );
         GeneralLayout.setVerticalGroup(
             GeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,10 +348,13 @@ public class GTranslate extends javax.swing.JFrame {
                 .addGroup(GeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(translateTo)
                     .addComponent(LangSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
                 .addGroup(GeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(langByCode)
-                    .addComponent(langCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(GeneralLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(langByCode))
+                    .addGroup(GeneralLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(langCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -402,7 +399,7 @@ public class GTranslate extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(proxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(proxy))
-                .addContainerGap(178, Short.MAX_VALUE))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
         proxySettingsLayout.setVerticalGroup(
             proxySettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,7 +422,7 @@ public class GTranslate extends javax.swing.JFrame {
         proxySettings1.setLayout(proxySettings1Layout);
         proxySettings1Layout.setHorizontalGroup(
             proxySettings1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 437, Short.MAX_VALUE)
+            .addGap(0, 446, Short.MAX_VALUE)
         );
         proxySettings1Layout.setVerticalGroup(
             proxySettings1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -457,7 +454,7 @@ public class GTranslate extends javax.swing.JFrame {
                 .addComponent(proxySettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(proxySettings1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Settings", jPanel1);
@@ -474,7 +471,7 @@ public class GTranslate extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -508,16 +505,25 @@ public class GTranslate extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStartMouseReleased
-        
+
         new Thread(new Runnable() {
 
             public void run() {
                 try {
+                    if (btnStart.getText().equals("Stop")) {
+                        canTranslate = false;
+                        btnStart.setText("Start");
+                        return;
+                    }
+                    btnStart.setText("Stop");
                     if (translateTo.isSelected()) {
-                        translateToLang(set[LangSel.getSelectedIndex()]);
+                        canTranslate = true;
+                        translateToLang(set[LangSel.getSelectedIndex() + 1]);
                     } else if (langByCode.isSelected()) {
+                        canTranslate = true;
                         translateToLangbyCode(langCode.getText());
                     } else {
+                        canTranslate = true;
                         translateAll();
                     }
                 } catch (Exception ex) {
@@ -526,18 +532,18 @@ public class GTranslate extends javax.swing.JFrame {
             }
         }).start();
     }//GEN-LAST:event_btnStartMouseReleased
-/**
- * Listen to SliderLines for value change
- * @param evt
- */
+    /**
+     * Listen to SliderLines for value change
+     * @param evt
+     */
     private void SliderLinesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SliderLinesMouseReleased
         nr_lines = SliderLines.getValue() * 5;
         lines.setText(nr_lines + "");
     }//GEN-LAST:event_SliderLinesMouseReleased
-/**
- *
- * @param evt
- */
+    /**
+     *
+     * @param evt
+     */
     private void translateToItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_translateToItemStateChanged
         if (translateTo.isSelected()) {
             LangSel.setEnabled(true);
@@ -553,11 +559,11 @@ public class GTranslate extends javax.swing.JFrame {
             langCode.setEnabled(false);
         }
     }//GEN-LAST:event_langByCodeItemStateChanged
-/**
- * Reads a file and displays it in txtInput 
- * @throws FileNotFoundException
- * @throws IOException
- */
+    /**
+     * Reads a file and displays it in txtInput
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public void readFile() throws FileNotFoundException, IOException {
         File file = new File(input_file);
         FileInputStream f = new FileInputStream(file);
@@ -584,11 +590,11 @@ public class GTranslate extends javax.swing.JFrame {
         }
     }
     private void btnLoadFileMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadFileMouseReleased
-       int response=fileChooser.showOpenDialog(this);
-       if(response==JFileChooser.APPROVE_OPTION) {
-           input_file = fileChooser.getSelectedFile().getPath();
-           lblSize.setText("Size: "+fileChooser.getSelectedFile().length()+"");
-           
+        int response = fileChooser.showOpenDialog(this);
+        if (response == JFileChooser.APPROVE_OPTION) {
+            input_file = fileChooser.getSelectedFile().getPath();
+            lblSize.setText("Size: " + fileChooser.getSelectedFile().length() + "");
+
             new Thread(new Runnable() {
 
                 public void run() {
@@ -596,7 +602,7 @@ public class GTranslate extends javax.swing.JFrame {
                         txtInput.setEditable(false);
                         readFile();
                         txtInput.setEditable(true);
-                        lblNrLines.setText("Number of lines: "+txtInput.getLineCount());
+                        lblNrLines.setText("Number of lines: " + txtInput.getLineCount());
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(GTranslate.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -608,16 +614,14 @@ public class GTranslate extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoadFileMouseReleased
 
     private void btnPasteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPasteMouseReleased
-           txtInput.setText(Utils.getClipboardContents());
+        txtInput.setText(Utils.getClipboardContents());
     }//GEN-LAST:event_btnPasteMouseReleased
 
     private void proxyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_proxyItemStateChanged
-        if(proxy.isSelected())
-        {
+        if (proxy.isSelected()) {
             proxyHost.setEnabled(true);
             proxyPort.setEnabled(true);
-        }else
-        {
+        } else {
             proxyHost.setEnabled(false);
             proxyPort.setEnabled(false);
         }
@@ -650,11 +654,11 @@ public class GTranslate extends javax.swing.JFrame {
         BufferedReader br = new BufferedReader(fr);
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out), "UTF-8"));
-         
+
         int total = Utils.countLines(input_file);
-        float  startTime = System.currentTimeMillis();
+        float startTime = System.currentTimeMillis();
         label:
-        while (br.ready()) {
+        while (br.ready() && canTranslate) {
             try {
                 br.mark(1000);
                 Translate.setHttpReferrer(refs[new Random().nextInt(1)]);
@@ -689,42 +693,40 @@ public class GTranslate extends javax.swing.JFrame {
                 Thread.sleep(100);
                 //   if(linecount==10000) Thread.currentThread().sleep(350);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage()+"@line "+linecount);
-               // br.reset();
+                //JOptionPane.showMessageDialog(this, ex.getMessage()+"@line "+linecount);
+                br.reset();
             }
-            int cur = (int) ((System.currentTimeMillis() - startTime) / 1000F)*(total)/linecount;
+            int cur = (int) ((System.currentTimeMillis() - startTime) / 1000F) * (total) / linecount;
             int minutes = cur / 60;
-            int sec =  (cur - minutes * 60);
+            int sec = (cur - minutes * 60);
             int hours = minutes / 60;
             minutes -= hours * 60;
             lblTime.setText((hours / 10 == 0 ? "0" + hours : hours) + ":" + (minutes / 10 == 0 ? "0" + minutes : minutes) + ":" + (sec / 10 == 0 ? "0" + sec : sec));
         }
         bw.close();
     }
+
     /**
      * Translation by language code
      * @param code
      * @throws Exception
      */
-
     public void translateToLangbyCode(String code) throws Exception {
         Language l = Language.fromString(code);
         translateToLang(l);
     }
+
     /**
      * Translates to all languages
      * @throws Exception
      */
-
     public void translateAll() throws Exception {
         //position 0 is AUTO_DETECT
-        for (int i =1; i < set.length; i++) {
+        for (int i = 1; i < set.length; i++) {
             translateToLang(set[i]);
             Thread.sleep(5000);
         }
     }
-
-   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel General;
     private javax.swing.JComboBox LangSel;
@@ -767,5 +769,6 @@ public class GTranslate extends javax.swing.JFrame {
     private String input_file = "input.txt";
     private String[] refs = {"proiect.frevar.com",
         "google.com", "yahoo.com"
-    };  
+    };
+    private  boolean canTranslate = false;
 }
