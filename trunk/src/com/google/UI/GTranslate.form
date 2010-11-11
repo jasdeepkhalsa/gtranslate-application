@@ -81,7 +81,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" alignment="0" pref="558" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" alignment="0" pref="569" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
@@ -133,7 +133,7 @@
                               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="jScrollPane2" pref="347" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="355" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -205,7 +205,7 @@
                               <Component id="lblSize" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblNrLines" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="151" max="32767" attributes="0"/>
+                          <EmptySpace pref="183" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -295,7 +295,7 @@
                       <Component id="proxySettings" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="proxySettings1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -324,17 +324,19 @@
                                   <Component id="lines" min="-2" pref="25" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="translateTo" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="23" pref="23" max="23" attributes="0"/>
-                                  <Component id="LangSel" min="-2" pref="250" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="langByCode" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="57" pref="57" max="57" attributes="0"/>
-                                  <Component id="langCode" min="-2" pref="250" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="translateTo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="langByCode" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="langCode" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                                      <Component id="LangSel" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
+                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -353,10 +355,15 @@
                               <Component id="translateTo" min="-2" max="-2" attributes="0"/>
                               <Component id="LangSel" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="5" pref="5" max="5" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="langByCode" min="-2" max="-2" attributes="0"/>
-                              <Component id="langCode" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="5" pref="5" max="5" attributes="0"/>
+                                  <Component id="langByCode" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="langCode" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace pref="27" max="32767" attributes="0"/>
                       </Group>
@@ -370,7 +377,7 @@
                       <ComponentRef name="option"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="Translate to ALL"/>
+                    <Property name="text" type="java.lang.String" value="Bulk Translate"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="translateTo">
@@ -482,7 +489,7 @@
                               </Group>
                               <Component id="proxy" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="178" max="32767" attributes="0"/>
+                          <EmptySpace pref="190" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -568,7 +575,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="437" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="446" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -594,7 +601,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="558" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="569" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
