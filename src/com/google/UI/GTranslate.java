@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -284,7 +285,7 @@ public class GTranslate extends javax.swing.JFrame {
         });
 
         SliderLines.setMajorTickSpacing(1);
-        SliderLines.setMaximum(10);
+        SliderLines.setMaximum(20);
         SliderLines.setMinimum(1);
         SliderLines.setSnapToTicks(true);
         SliderLines.setValue(1);
@@ -691,9 +692,9 @@ public class GTranslate extends javax.swing.JFrame {
                     prog.setString(df.format(proc) + "%");
                 }
                 Thread.sleep(100);
-                //   if(linecount==10000) Thread.currentThread().sleep(350);
+                
             } catch (Exception ex) {
-                //JOptionPane.showMessageDialog(this, ex.getMessage()+"@line "+linecount);
+                JOptionPane.showMessageDialog(this, ex.getMessage()+"@line "+linecount);
                 br.reset();
             }
             int cur = (int) ((System.currentTimeMillis() - startTime) / 1000F) * (total) / linecount;
